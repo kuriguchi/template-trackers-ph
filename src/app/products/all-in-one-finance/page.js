@@ -2,7 +2,7 @@
 import Link from "next/link";
 import { useState } from "react";
 
-function BookkeepingPaymentForm() {
+function AllInOneFinancePaymentForm() {
   const [buyerEmail, setBuyerEmail] = useState("");
   const [paymentError, setPaymentError] = useState("");
   const [isPaying, setIsPaying] = useState(false);
@@ -28,7 +28,7 @@ function BookkeepingPaymentForm() {
             const res = await fetch("/api/payments/create", {
               method: "POST",
               headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ buyerEmail, productKey: "bookkeeping" }),
+              body: JSON.stringify({ buyerEmail, productKey: "all-in-one-finance" }),
             });
             const data = await res.json();
             if (!res.ok) {
@@ -99,33 +99,39 @@ function BookkeepingPaymentForm() {
   );
 }
 
-export default function BookkeepingProductPage() {
+export default function AllInOneFinanceProductPage() {
   return (
     <main className="min-h-dvh bg-white text-[#1560a8]">
       <div className="mx-auto max-w-2xl px-6 py-16">
         <div className="flex justify-center mb-8">
-          <img src="/1st.png" alt="Bookkeeping Preview" className="rounded-xl shadow-lg max-w-full h-64 object-contain" />
+          <img
+            src="/all_in_one_fin.png"
+            alt="All-in-one Finance Preview"
+            className="rounded-xl shadow-lg max-w-full h-64 object-contain"
+          />
         </div>
-        <h1 className="text-3xl font-extrabold text-[#0b4f78] mb-4">EASY BOOKKEEPING TRACKER</h1>
+        <h1 className="text-3xl font-extrabold text-[#0b4f78] mb-4">
+          ALL-IN-ONE FINANCE TRACKER
+        </h1>
         <p className="mb-6 text-base text-[#1560a8]/90">
-          Take control of your business finances with this Business Profit and Loss Spreadsheet Template, built to help you understand where your money goes and how your business performs.<br /><br />
-          It simplifies tracking income, expenses, and overall profitability so you can make smarter financial decisions and plan for growth.<br /><br />
-          Perfect for entrepreneurs, freelancers, and small business owners who want to stay organized and confident about their numbers.
+          Organize every peso in one place with the All-in-one Finance Tracker. Track income,
+          expenses, bills, savings, and goals so you can see your full financial picture at a glance.
+          Perfect for households, freelancers, and small business owners.
         </p>
         <hr className="my-6 border-[#2596be]/30" />
         <h2 className="text-xl font-bold mb-3">WHAT’S INSIDE</h2>
         <ul className="list-disc pl-6 mb-6 text-[#1560a8]/90">
-          <li>Instructions Tab – A quick guide that walks you through how to use each tab with ease.</li>
-          <li>Currency Options – Choose from more than 45 currencies. If yours isn’t listed, we can add it for you at no cost.</li>
-          <li>Setup Tab – Create your income and expense categories, set your bookkeeping start month, and record your monthly profit goals.</li>
-          <li>Income Log Tab – Record every income entry with date, value, and category. Input your preferred tax rate and the sheet will automatically calculate your net income and tax.</li>
-          <li>Expense Log Tab – Keep an organized list of your expenses. Enter the values and your defined tax rate, and the template will instantly compute your total and net expenses.</li>
-          <li>Monthly Overview – Get a clear summary of your monthly cash flow, including income, expenses, taxes, and profit — complete with visual charts for easy analysis.</li>
-          <li>Tax Overview – Keep your tax details in order. The tab summarizes deductible expenses and income records to make tax time stress-free.</li>
-          <li>Annual Overview – Review your full-year performance at a glance. Charts and summaries help you compare results and track your yearly profit goals.</li>
+          <li>Monthly Trackers (12 Tabs)</li>
+          <li>Weekly Tracker</li>
+          <li>Paycheck Tracker</li>
+          <li>50/30/20 Tab Tracker.</li>
+          <li>Sinking Funds Tracker</li>
+          <li>Debt Snowball Tracker</li>
+          <li>Annual Dashboard & Overview</li>
+          <li>Bill Calendar</li>
         </ul>
         <hr className="my-8 border-[#2596be]/30" />
-        <BookkeepingPaymentForm />
+        <AllInOneFinancePaymentForm />
         <div className="mt-8">
           <Link href="/" className="text-[#2596be] underline">
             Back to products

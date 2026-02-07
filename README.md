@@ -14,6 +14,17 @@ Open \<domain_here\> in your browser.
 ## Note
 - Google Drive folder is shared with buyer's email after payment confirmation
 
+## Environment variables
+- PAYMONGO_SECRET_KEY
+- GOOGLE_OAUTH_CLIENT_ID
+- GOOGLE_OAUTH_CLIENT_SECRET
+- GOOGLE_OAUTH_REFRESH_TOKEN
+- GOOGLE_TEMPLATE_FOLDER_ID (bookkeeping)
+- GOOGLE_TEMPLATE_FOLDER_ID_ACADEMIC_TRACKING (2nd product)
+- GOOGLE_TEMPLATE_FOLDER_ID_ALL_IN_ONE_FINANCE (3rd product)
+- GOOGLE_ORDERS_FOLDER_ID (optional)
+- PAYMONGO_RETURN_URL or NEXT_PUBLIC_APP_URL
+
 ## License
 MIT
 

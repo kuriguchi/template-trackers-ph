@@ -106,30 +106,36 @@ export default function Home() {
               {
                 title: "Bookkeeping Template",
                 tag: "Simple expense monitoring",
+                price: "₱149",
+                href: "/products/bookkeeping",
+                imageUrl: "/1st.png",
+              },
+              {
+                title: "Academic Tracking",
+                tag: "Grades, assignments, and goals",
+                price: "₱199",
+                href: "/products/academic-tracking",
+                imageUrl: "/academic_tracker_preview.png",
+              },
+              {
+                title: "All-in-one Finance Tracker",
+                tag: "Budget, savings, and cash flow",
                 price: "₱249",
-              },
-              {
-                title: "Coming Soon",
-                tag: "Placeholder",
-                price: "-",
-              },
-              {
-                title: "Coming Soon",
-                tag: "Placeholder",
-                price: "-",
+                href: "/products/all-in-one-finance",
+                imageUrl: "/all_in_one_fin.png",
               },
             ].map((t, idx) => (
               <div key={t.title + idx} className="rounded-xl border p-4 bg-white/60 sm:m-4">
                 <div className="h-36 rounded-md bg-gradient-to-tr from-[#F0F4F9] to-[#D3E3FD] flex items-center justify-center mb-4">
-                  {t.title === "Bookkeeping Template" ? (
-                    <img src="/1st.png" alt="Bookkeeping Preview" className="h-full w-full object-cover rounded-md shadow" />
+                  {t.imageUrl ? (
+                    <img src={t.imageUrl} alt={`${t.title} Preview`} className="h-full w-full object-cover rounded-md shadow" />
                   ) : (
                     <span className="text-sm text-[#1560a8]/80">Preview</span>
                   )}
                 </div>
                 <h4 className="font-semibold" style={{ color: "#0b4f78" }}>
-                  {t.title === "Bookkeeping Template" ? (
-                    <a href="/products/bookkeeping" className="text-[#2596be] underline">
+                  {t.href ? (
+                    <a href={t.href} className="text-[#2596be] underline">
                       {t.title}
                     </a>
                   ) : (
@@ -139,10 +145,13 @@ export default function Home() {
                 <p className="text-sm text-[#1560a8]/80">{t.tag}</p>
                 <div className="mt-4 flex items-center justify-between">
                   <div className="text-lg font-bold">{t.price}</div>
-                  {t.price !== "-" ? (
-                    <button className="rounded-md bg-[#2596be] px-3 py-1 text-white text-sm font-medium">
-                      Add to Cart
-                    </button>
+                  {t.href ? (
+                    <a
+                      href={t.href}
+                      className="rounded-md bg-[#2596be] px-3 py-1 text-white text-sm font-medium"
+                    >
+                      Buy Now
+                    </a>
                   ) : null}
                 </div>
               </div>
@@ -197,7 +206,7 @@ export default function Home() {
         </section>
 
         {/* Testimonials */}
-        <section className="space-y-4">
+        {/* <section className="space-y-4">
           <h3 className="text-2xl font-bold text-center" style={{ color: "#0b4f78" }}>
             What Our Users Are Saying
           </h3>
@@ -225,7 +234,7 @@ export default function Home() {
               </div>
             ))}
           </div>
-        </section>
+        </section> */}
 
         {/* Subscribe */}
         <section className="rounded-2xl bg-white/70 p-6 flex flex-col items-center">

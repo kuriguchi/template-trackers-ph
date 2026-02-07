@@ -2,7 +2,7 @@
 import Link from "next/link";
 import { useState } from "react";
 
-function BookkeepingPaymentForm() {
+function AcademicTrackingPaymentForm() {
   const [buyerEmail, setBuyerEmail] = useState("");
   const [paymentError, setPaymentError] = useState("");
   const [isPaying, setIsPaying] = useState(false);
@@ -28,7 +28,7 @@ function BookkeepingPaymentForm() {
             const res = await fetch("/api/payments/create", {
               method: "POST",
               headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ buyerEmail, productKey: "bookkeeping" }),
+              body: JSON.stringify({ buyerEmail, productKey: "academic-tracking" }),
             });
             const data = await res.json();
             if (!res.ok) {
@@ -99,33 +99,38 @@ function BookkeepingPaymentForm() {
   );
 }
 
-export default function BookkeepingProductPage() {
+export default function AcademicTrackingProductPage() {
   return (
     <main className="min-h-dvh bg-white text-[#1560a8]">
       <div className="mx-auto max-w-2xl px-6 py-16">
         <div className="flex justify-center mb-8">
-          <img src="/1st.png" alt="Bookkeeping Preview" className="rounded-xl shadow-lg max-w-full h-64 object-contain" />
+          <img
+            src="/academic_tracker_preview.png"
+            alt="Academic Tracker Preview"
+            className="rounded-xl shadow-lg max-w-full h-64 object-contain"
+          />
         </div>
-        <h1 className="text-3xl font-extrabold text-[#0b4f78] mb-4">EASY BOOKKEEPING TRACKER</h1>
+        <h1 className="text-3xl font-extrabold text-[#0b4f78] mb-4">
+          ACADEMIC TRACKING SYSTEM
+        </h1>
         <p className="mb-6 text-base text-[#1560a8]/90">
-          Take control of your business finances with this Business Profit and Loss Spreadsheet Template, built to help you understand where your money goes and how your business performs.<br /><br />
-          It simplifies tracking income, expenses, and overall profitability so you can make smarter financial decisions and plan for growth.<br /><br />
-          Perfect for entrepreneurs, freelancers, and small business owners who want to stay organized and confident about their numbers.
+          Stay on top of grades, assignments, and goals with this Academic Tracking System.
+          It helps students and parents organize subjects, monitor progress, and plan study
+          routines in one easy-to-use dashboard.
         </p>
         <hr className="my-6 border-[#2596be]/30" />
         <h2 className="text-xl font-bold mb-3">WHAT’S INSIDE</h2>
         <ul className="list-disc pl-6 mb-6 text-[#1560a8]/90">
-          <li>Instructions Tab – A quick guide that walks you through how to use each tab with ease.</li>
-          <li>Currency Options – Choose from more than 45 currencies. If yours isn’t listed, we can add it for you at no cost.</li>
-          <li>Setup Tab – Create your income and expense categories, set your bookkeeping start month, and record your monthly profit goals.</li>
-          <li>Income Log Tab – Record every income entry with date, value, and category. Input your preferred tax rate and the sheet will automatically calculate your net income and tax.</li>
-          <li>Expense Log Tab – Keep an organized list of your expenses. Enter the values and your defined tax rate, and the template will instantly compute your total and net expenses.</li>
-          <li>Monthly Overview – Get a clear summary of your monthly cash flow, including income, expenses, taxes, and profit — complete with visual charts for easy analysis.</li>
-          <li>Tax Overview – Keep your tax details in order. The tab summarizes deductible expenses and income records to make tax time stress-free.</li>
-          <li>Annual Overview – Review your full-year performance at a glance. Charts and summaries help you compare results and track your yearly profit goals.</li>
+          <li>Subject list with weekly schedules.</li>
+          <li>Assignment tracker with due dates and status.</li>
+          <li>Grade tracker with weighted averages.</li>
+          <li>Exam countdown and revision checklist.</li>
+          <li>Goal planner and study habit tracker.</li>
+          <li>Budget tracker for school expenses.</li>
+          <li>Progress dashboard with charts.</li>
         </ul>
         <hr className="my-8 border-[#2596be]/30" />
-        <BookkeepingPaymentForm />
+        <AcademicTrackingPaymentForm />
         <div className="mt-8">
           <Link href="/" className="text-[#2596be] underline">
             Back to products

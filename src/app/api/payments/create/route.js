@@ -1,5 +1,23 @@
 const PAYMONGO_API_BASE = "https://api.paymongo.com/v1";
 
+function resolveTemplateFolderId({ templateFolderId, productKey }) {
+  if (templateFolderId) {
+    return templateFolderId;
+  }
+
+  const productMap = {
+    bookkeeping: process.env.GOOGLE_TEMPLATE_FOLDER_ID,
+    "academic-tracking": process.env.GOOGLE_TEMPLATE_FOLDER_ID_ACADEMIC_TRACKING,
+    "all-in-one-finance": process.env.GOOGLE_TEMPLATE_FOLDER_ID_ALL_IN_ONE_FINANCE,
+  };
+
+  if (productKey) {
+    return productMap[productKey] || null;
+  }
+
+  return process.env.GOOGLE_TEMPLATE_FOLDER_ID;
+}
+
 function getPaymongoSecretKey() {
   const secretKey = process.env.PAYMONGO_SECRET_KEY;
   if (!secretKey) {
@@ -24,18 +42,27 @@ function buildAuthHeader(secretKey) {
 
 export async function POST(request) {
   try {
-    const { buyerEmail, templateFolderId } = await request.json();
+    const { buyerEmail, templateFolderId, productKey } = await request.json();
 
     if (!buyerEmail) {
       return Response.json({ error: "buyerEmail is required." }, { status: 400 });
     }
 
-    const resolvedTemplateFolderId =
-      templateFolderId || process.env.GOOGLE_TEMPLATE_FOLDER_ID;
+    const resolvedTemplateFolderId = resolveTemplateFolderId({
+      templateFolderId,
+      productKey,
+    });
 
     if (!resolvedTemplateFolderId) {
+      const envHint =
+        productKey === "academic-tracking"
+          ? "GOOGLE_TEMPLATE_FOLDER_ID_ACADEMIC_TRACKING"
+          : productKey === "all-in-one-finance"
+          ? "GOOGLE_TEMPLATE_FOLDER_ID_ALL_IN_ONE_FINANCE"
+          : "GOOGLE_TEMPLATE_FOLDER_ID";
+
       return Response.json(
-        { error: "Missing template folder configuration." },
+        { error: `Missing template folder configuration. Set ${envHint}.` },
         { status: 400 }
       );
     }
@@ -59,6 +86,7 @@ export async function POST(request) {
             metadata: {
               buyerEmail,
               templateFolderId: resolvedTemplateFolderId,
+              productKey: productKey || "bookkeeping",
             },
           },
         },
