@@ -1,11 +1,12 @@
 'use client';
 export const dynamic = "force-dynamic";
 
+import { Suspense } from "react";
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 
-export default function PaymentSuccessPage() {
+function PaymentSuccessInner() {
   const searchParams = useSearchParams();
   const paymentIntentId = useMemo(
     () => searchParams?.get("payment_intent_id"),
@@ -81,5 +82,13 @@ export default function PaymentSuccessPage() {
         </div>
       </div>
     </main>
+  );
+}
+
+export default function PaymentSuccessPage() {
+  return (
+    <Suspense>
+      <PaymentSuccessInner />
+    </Suspense>
   );
 }
