@@ -24,6 +24,8 @@ Open \<domain_here\> in your browser.
 - GOOGLE_TEMPLATE_FOLDER_ID_ALL_IN_ONE_FINANCE (3rd product)
 - GOOGLE_ORDERS_FOLDER_ID (optional)
 - PAYMONGO_RETURN_URL or NEXT_PUBLIC_APP_URL
+- RESEND_API_KEY (for email notifications)
+- EMAIL_FROM (optional, defaults to noreply@templatetrackersph.com)
 
 ## License
 MIT
