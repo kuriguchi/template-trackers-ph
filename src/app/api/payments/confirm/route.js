@@ -1,5 +1,5 @@
 import { grantAccess } from "@/lib/grantAccess";
-import { sendPurchaseConfirmationEmail } from "@/lib/sendEmail";
+// import { sendPurchaseConfirmationEmail } from "@/lib/sendEmail";
 
 const PAYMONGO_API_BASE = "https://api.paymongo.com/v1";
 
@@ -74,18 +74,17 @@ export async function GET(request) {
       templateFolderId,
     });
 
-    // Send confirmation email with Google Drive link
-    try {
-      await sendPurchaseConfirmationEmail({
-        buyerEmail,
-        productKey,
-        folderLink: result.webViewLink,
-        folderName: result.name,
-      });
-    } catch (emailError) {
-      console.error("Email send failed (non-blocking):", emailError);
-      // Continue even if email fails - don't block the purchase fulfillment
-    }
+    // Email notification disabled (domain not verified)
+    // try {
+    //   await sendPurchaseConfirmationEmail({
+    //     buyerEmail,
+    //     productKey,
+    //     folderLink: result.webViewLink,
+    //     folderName: result.name,
+    //   });
+    // } catch (emailError) {
+    //   console.error("Email send failed (non-blocking):", emailError);
+    // }
 
     return Response.json({
       status: "fulfilled",

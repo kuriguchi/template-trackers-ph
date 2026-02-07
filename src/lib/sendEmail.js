@@ -128,7 +128,7 @@ function generateEmailHtml({
               <p>© 2026 Template Trackers PH. All rights reserved.</p>
               <p>
                 <a href="mailto:templatetrackersph@gmail.com" style="color: #2596be;">Contact Support</a> |
-                <a href="https://templatetrackersph.com" style="color: #2596be;">Visit Website</a>
+                <a href="https://template-trackers-ph.vercel.app" style="color: #2596be;">Visit Website</a>
               </p>
             </div>
           </div>
