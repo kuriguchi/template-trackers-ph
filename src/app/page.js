@@ -5,6 +5,8 @@ import { useState } from "react";
 
 export default function Home() {
   const [email, setEmail] = useState("");
+  const [subscribeStatus, setSubscribeStatus] = useState("");
+  const [isSubscribing, setIsSubscribing] = useState(false);
   const [buyerEmail, setBuyerEmail] = useState("");
   const [paymentError, setPaymentError] = useState("");
   const [isPaying, setIsPaying] = useState(false);
@@ -71,28 +73,23 @@ export default function Home() {
           id="about"
           className="grid md:grid-cols-2 gap-6 items-center bg-white/60 rounded-2xl p-6 shadow-sm sm:no-border sm:no-shadow"
         >
-          <div>
+          <div className="text-center md:col-span-2 mx-auto">
             <h2 className="text-2xl font-bold" style={{ color: "#0b4f78" }}>
               We make planning simple
             </h2>
-            <p className="mt-3 text-[#1560a8]/90">
+            <p className="mt-3 text-[#1560a8]/90 max-w-xl mx-auto">
               We make digital templates that simplify financial planning and empower you to manage your money
               intentionally — whether you’re budgeting for your family, business, or side hustle.
             </p>
 
-            <div className="mt-4">
+            <div className="mt-4 flex justify-center">
               <a href="#how-it-works" className="inline-block rounded-md bg-[#2596be] px-4 py-2 text-white font-semibold">
                 See How It Works
               </a>
             </div>
           </div>
 
-          <div className="flex justify-center">
-            {/* Mockup image placeholder */}
-            <div className="w-64 h-40 rounded-lg bg-gradient-to-br from-[#D3E3FD] to-[#F0F4F9] flex items-center justify-center border border-white/40 shadow">
-              <span className="text-sm text-[#1560a8]/80">Mockup Preview</span>
-            </div>
-          </div>
+          <div />
         </section>
 
         {/* Products */}
@@ -242,10 +239,27 @@ export default function Home() {
             Join our community of smart planners — get updates and exclusive offers.
           </h4>
           <form
-            onSubmit={(e) => {
+            onSubmit={async (e) => {
               e.preventDefault();
-              alert(`Subscribed: ${email}`);
-              setEmail("");
+              setSubscribeStatus("");
+              if (!email) return;
+              setIsSubscribing(true);
+              try {
+                const res = await fetch('/api/subscribe', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({ email }),
+                });
+                const data = await res.json();
+                if (!res.ok) throw new Error(data?.error || 'Subscribe failed');
+                setSubscribeStatus('success');
+                setEmail('');
+              } catch (err) {
+                setSubscribeStatus('error');
+                console.error('Subscribe error:', err);
+              } finally {
+                setIsSubscribing(false);
+              }
             }}
             className="mt-4 flex flex-col sm:flex-row w-full max-w-xl gap-3"
           >
@@ -257,10 +271,16 @@ export default function Home() {
               placeholder="you@example.com"
               className="flex-1 rounded-md border px-3 py-2 w-full"
             />
-            <button className="rounded-md bg-[#2596be] px-4 py-2 text-white font-semibold w-full sm:w-auto">
-              Subscribe Now
+            <button disabled={isSubscribing} className="rounded-md bg-[#2596be] px-4 py-2 text-white font-semibold w-full sm:w-auto">
+              {isSubscribing ? 'Subscribing...' : 'Subscribe Now'}
             </button>
           </form>
+          {subscribeStatus === 'success' && (
+            <p className="mt-3 text-sm text-green-700">Thanks — you've been subscribed.</p>
+          )}
+          {subscribeStatus === 'error' && (
+            <p className="mt-3 text-sm text-red-600">Subscription failed. Please try again later.</p>
+          )}
         </section>
 
         {/* Footer */}

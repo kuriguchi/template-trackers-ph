@@ -16,6 +16,8 @@ function PaymentSuccessInner() {
   const [status, setStatus] = useState("loading");
   const [message, setMessage] = useState("");
   const [folderLink, setFolderLink] = useState("");
+  const [errorCode, setErrorCode] = useState("");
+  const [buyerEmail, setBuyerEmail] = useState("");
 
   useEffect(() => {
     if (!paymentIntentId) {
@@ -39,7 +41,9 @@ function PaymentSuccessInner() {
 
         if (!res.ok) {
           setStatus("error");
+          setErrorCode(data?.code || "");
           setMessage(data?.error || "Failed to confirm payment.");
+          setBuyerEmail(data?.buyerEmail || "");
           return;
         }
 
@@ -62,6 +66,14 @@ function PaymentSuccessInner() {
         <p className="mt-4 text-sm text-[#1560a8]/80">Status: {status}</p>
         <p className="mt-4">{message}</p>
 
+        {status === "loading" && (
+          <div className="mt-6 rounded-md bg-blue-50 border border-blue-200 p-4">
+            <p className="text-sm text-blue-700">
+              If this page takes too long or gets stuck, please check your Google Drive directly. Your template folder may have already been copied and is ready for you to access.
+            </p>
+          </div>
+        )}
+
         {status === "success" && folderLink ? (
           <div className="mt-6">
             <a
@@ -72,6 +84,23 @@ function PaymentSuccessInner() {
             >
               Open your template folder
             </a>
+          </div>
+        ) : null}
+
+        {errorCode === "GMAIL_VERIFICATION_FAILED" && buyerEmail ? (
+          <div className="mt-6 rounded-md bg-red-50 border border-red-200 p-4 text-left">
+            <h2 className="font-semibold text-red-800 mb-2">Gmail Verification Failed</h2>
+            <p className="text-sm text-red-700 mb-3">
+              The email <strong>{buyerEmail}</strong> could not be verified. This may mean:
+            </p>
+            <ul className="list-disc pl-5 text-sm text-red-700 mb-3 space-y-1">
+              <li>The Gmail address is inactive or suspended</li>
+              <li>The email address was typed incorrectly</li>
+              <li>The account has unusual activity restrictions</li>
+            </ul>
+            <p className="text-sm text-red-700">
+              Please contact support with your payment ID to retry with a valid Gmail address.
+            </p>
           </div>
         ) : null}
 

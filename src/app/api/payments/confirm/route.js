@@ -69,10 +69,46 @@ export async function GET(request) {
       );
     }
 
-    const result = await grantAccess({
-      buyerEmail,
-      templateFolderId,
-    });
+    let result;
+    try {
+      result = await grantAccess({
+        buyerEmail,
+        templateFolderId,
+      });
+    } catch (driveError) {
+      console.error("Drive API error during folder share:", {
+        message: driveError?.message,
+        code: driveError?.code,
+        status: driveError?.status,
+        fullError: JSON.stringify(driveError),
+      });
+
+      // Check if it's a Gmail validation/sharing error
+      const errorMsg = driveError?.message || "";
+      const isGmailIssue =
+        errorMsg.includes("Invalid email") ||
+        errorMsg.includes("invalid_value") ||
+        errorMsg.includes("badRequest") ||
+        errorMsg.includes("Account suspended") ||
+        errorMsg.includes("invalid_client") ||
+        driveError?.code === "INVALID_ARGUMENT" ||
+        driveError?.code === "PERMISSION_DENIED";
+
+      if (isGmailIssue) {
+        return Response.json(
+          {
+            error: "The Gmail address provided is invalid or cannot be accessed. Please verify the email is correct and active, then contact (templatetrackersph@gmail.com) to retry.",
+            code: "GMAIL_VERIFICATION_FAILED",
+            buyerEmail,
+            paymentIntentId,
+          },
+          { status: 400 }
+        );
+      }
+
+      // Generic Drive error
+      throw driveError;
+    }
 
     // Email notification disabled (domain not verified)
     // try {

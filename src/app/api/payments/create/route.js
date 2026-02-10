@@ -31,7 +31,7 @@ function getOrigin(request) {
     process.env.PAYMONGO_RETURN_URL ||
     request.headers.get("origin") ||
     process.env.NEXT_PUBLIC_APP_URL ||
-    "http://localhost:3000"
+    "https://template-trackers-ph.vercel.app"
   );
 }
 
@@ -46,6 +46,12 @@ export async function POST(request) {
 
     if (!buyerEmail) {
       return Response.json({ error: "buyerEmail is required." }, { status: 400 });
+    }
+
+    // Email is pre-verified via OAuth, just validate format
+    const gmailRegex = /^[^\s@]+@gmail\.com$/i;
+    if (!gmailRegex.test(buyerEmail)) {
+      return Response.json({ error: "Please use a valid Gmail address." }, { status: 400 });
     }
 
     const resolvedTemplateFolderId = resolveTemplateFolderId({
@@ -70,6 +76,23 @@ export async function POST(request) {
     const secretKey = getPaymongoSecretKey();
     const authHeader = buildAuthHeader(secretKey);
 
+    // Map product keys to amounts (PayMongo expects amount in centavos)
+    // const productPrices = {
+    //   bookkeeping: 14900, // ₱149.00
+    //   "academic-tracking": 19900, // ₱199.00
+    //   "all-in-one-finance": 24900, // ₱249.00
+    // };
+
+    // dummy product prices 
+    const productPrices = {
+      bookkeeping: 100, // ₱149.00
+      "academic-tracking": 100, // ₱199.00
+      "all-in-one-finance": 100, // ₱249.00
+    };
+
+    const selectedProductKey = productKey || "bookkeeping";
+    const amountToCharge = productPrices[selectedProductKey] || productPrices.bookkeeping;
+
     const paymentIntentResponse = await fetch(`${PAYMONGO_API_BASE}/payment_intents`, {
       method: "POST",
       headers: {
@@ -79,7 +102,7 @@ export async function POST(request) {
       body: JSON.stringify({
         data: {
           attributes: {
-            amount: 100,
+            amount: amountToCharge,
             currency: "PHP",
             payment_method_allowed: ["qrph"],
             description: "Template purchase",
